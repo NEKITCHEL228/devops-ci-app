@@ -64,9 +64,9 @@ jobs:
   image:
     needs: test
     runs-on: ubuntu-latest
-    # ИНЦИДЕНТ 1: прав на запись в GHCR пока нет
     permissions:
       contents: read
+      packages: write
 
     steps:
       - name: Checkout
