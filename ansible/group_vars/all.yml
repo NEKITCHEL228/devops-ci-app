@@ -1,0 +1,7 @@
+---
+ansible_python_interpreter: /usr/bin/python3
+app_image: "ghcr.io/nekitchel228/devops-ci-app"
+app_tag: "817cff591e26f03b5b6ac7214327f380af31ddbb"
+app_container_name: "devops-ci-app"
+app_host_port: 5000
+app_internal_port: 5000

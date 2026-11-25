@@ -1,0 +1,26 @@
+---
+- name: Audit deployed application state
+  hosts: vm
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Query container state
+      community.docker.docker_container_info:
+        name: "{{ app_container_name }}"
+      register: c_info
+
+    - name: Assert container is running
+      ansible.builtin.assert:
+        that:
+          - c_info.exists
+          - c_info.container.State.Running
+        fail_msg: "Контейнер {{ app_container_name }} не запущен!"
+
+    - name: Check health endpoint directly
+      ansible.builtin.uri:
+        url: "http://127.0.0.1:{{ app_host_port }}/health"
+        return_content: true
+      register: res_direct
+      failed_when: >
+        res_direct.status != 200 or
+        (res_direct.json | default({})).get("status") != "ok"
